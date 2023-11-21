@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  clerkUserId  String   @unique
+  email        String   @unique @db.VarChar(45)
+  role         String   @db.VarChar(10)
+  firstName    String?  @db.VarChar(45)
+  lastName     String?  @db.VarChar(45)
+  schoolStatus String   @default("PENDING") @db.VarChar(10)
+  schoolId     Int?
+  student      Student?
+  teacher      Teacher?
+}
+
+model School {
+  id   Int     @id @default(autoincrement())
+  npsn String  @unique @db.VarChar(8)
+  name String? @db.VarChar(45)
+}
+
+model Student {
+  id     Int     @id @default(autoincrement())
+  userId Int     @unique
+  nisn   String  @db.VarChar(10)
+  class  String  @db.VarChar(2)
+  major  String? @db.VarChar(45)
+  user   User    @relation(fields: [userId], references: [id])
+}
+
+model Teacher {
+  id     Int    @id @default(autoincrement())
+  userId Int    @unique
+  nuptk  String @db.VarChar(16)
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Personality {
+  id      Int      @id @default(autoincrement())
+  code    String   @unique @db.VarChar(3)
+  name    String   @db.VarChar(45)
+  desc    String   @db.Text
+  careers Career[]
+}
+
+model Career {
+  id            Int          @id @default(autoincrement())
+  code          String       @unique @db.VarChar(4)
+  name          String       @db.VarChar(45)
+  personalityId Int
+  personality   Personality? @relation(fields: [personalityId], references: [id])
+  expertiseId   Int
+  expertise     Expertise?   @relation(fields: [expertiseId], references: [id])
+  rules         Rule[]
+}
+
+model Expertise {
+  id      Int      @id @default(autoincrement())
+  name    String   @db.VarChar(45)
+  careers Career[]
+}
+
+model Statement {
+  id    Int    @id @default(autoincrement())
+  code  String @unique @db.VarChar(4)
+  desc  String @db.Text
+  rules Rule[]
+}
+
+model Rule {
+  id          Int        @id @default(autoincrement())
+  statementId Int
+  statement   Statement? @relation(fields: [statementId], references: [id])
+  careerId    Int
+  career      Career?    @relation(fields: [careerId], references: [id])
+}

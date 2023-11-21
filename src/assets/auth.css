@@ -1,0 +1,8 @@
+.cl-signIn-root, .cl-signUp-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #fbb03b;
+  min-height: 100vh;
+}
