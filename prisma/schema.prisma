@@ -59,14 +59,14 @@ model Career {
   name          String       @db.VarChar(45)
   personalityId Int
   personality   Personality? @relation(fields: [personalityId], references: [id])
-  expertiseId   Int
-  expertise     Expertise?   @relation(fields: [expertiseId], references: [id])
+  expertiseId   Int?
+  expertise     Expertise?   @relation(fields: [expertiseId], references: [id], onDelete: SetNull)
   rules         Rule[]
 }
 
 model Expertise {
   id      Int      @id @default(autoincrement())
-  name    String   @db.VarChar(45)
+  name    String   @unique @db.VarChar(45)
   careers Career[]
 }
 
@@ -80,7 +80,7 @@ model Statement {
 model Rule {
   id          Int        @id @default(autoincrement())
   statementId Int
-  statement   Statement? @relation(fields: [statementId], references: [id])
+  statement   Statement? @relation(fields: [statementId], references: [id], onDelete: Cascade)
   careerId    Int
-  career      Career?    @relation(fields: [careerId], references: [id])
+  career      Career?    @relation(fields: [careerId], references: [id], onDelete: Cascade)
 }

@@ -68,10 +68,6 @@ export default function DashboardSekolah() {
     }
   }
 
-  if (userLoading) {
-    return <LoaderFull />
-  }
-
   return (
     <>
       <section className="sm:px-4 lg:px-6 xl:px-8">
@@ -79,7 +75,7 @@ export default function DashboardSekolah() {
           {alert && (
             <div className="mb-3">
               <Alert color={alert.color} onDismiss={() => setAlert(null)}>
-                {alert.message}
+                <div dangerouslySetInnerHTML={{ __html: alert.message }} />
               </Alert>
             </div>
           )}

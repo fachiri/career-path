@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function LoaderFull() {
   return (
-    <div className="absolute left-0 top-0 z-50 w-screen h-screen bg-white grid place-content-center">
+    <div className="sticky left-0 top-0 z-50 w-full h-screen bg-white grid place-content-center overflow-hidden">
       <Image
         src={logo}
         alt="Logo CareerPath"

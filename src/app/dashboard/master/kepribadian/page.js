@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import { useState } from "react";
 import { Table } from 'flowbite-react';
 import useSWR from 'swr';
+import SkeletonTable from "@/components/skeleton/table";
 
 export default function MasterKepribadian() {
   const [alert, setAlert] = useState(null)
@@ -14,32 +15,34 @@ export default function MasterKepribadian() {
   return (
     <>
       <section className="sm:px-4 lg:px-6 xl:px-8">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-5">
           <div className="w-full p-6 bg-white sm:border sm:border-gray-200 sm:rounded-lg sm:shadow dark:bg-gray-800 dark:border-gray-700">
-            <div class="relative overflow-x-auto">
-              <Table striped>
-                <Table.Head>
-                  <Table.HeadCell>Kode</Table.HeadCell>
-                  <Table.HeadCell>Kepribadian</Table.HeadCell>
-                  <Table.HeadCell>Aksi</Table.HeadCell>
-                </Table.Head>
-                <Table.Body className="divide-y">
-                  {personalityData?.data.map((personality, key) => (
-                    <Table.Row key={key} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                      <Table.Cell>{personality.code}</Table.Cell>
-                      <Table.Cell>{personality.name}</Table.Cell>
-                      <Table.Cell>
-                        <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                          Edit
-                        </a>
-                      </Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
+            <div className="relative overflow-x-auto">
+              {personalityLoading ? <SkeletonTable /> :
+                <Table striped>
+                  <Table.Head className="border-b-2">
+                    <Table.HeadCell>Kode</Table.HeadCell>
+                    <Table.HeadCell>Kepribadian</Table.HeadCell>
+                    {/* <Table.HeadCell>Aksi</Table.HeadCell> */}
+                  </Table.Head>
+                  <Table.Body className="divide-y">
+                    {personalityData?.data.map((personality, key) => (
+                      <Table.Row key={key} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                        <Table.Cell>{personality.code}</Table.Cell>
+                        <Table.Cell>{personality.name}</Table.Cell>
+                        {/* <Table.Cell>
+                          <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
+                            Edit
+                          </a>
+                        </Table.Cell> */}
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+              }
             </div>
           </div>
-          <div className="w-full p-6 bg-white sm:border sm:border-gray-200 sm:rounded-lg sm:shadow dark:bg-gray-800 dark:border-gray-700">
+          {/* <div className="w-full p-6 bg-white sm:border sm:border-gray-200 sm:rounded-lg sm:shadow dark:bg-gray-800 dark:border-gray-700">
             <Formik
               initialValues={{ code: '', name: '', desc: '' }}
               validate={async values => {
@@ -129,7 +132,7 @@ export default function MasterKepribadian() {
                 </form>
               )}
             </Formik>
-          </div>
+          </div> */}
         </div>
       </section>
     </>
