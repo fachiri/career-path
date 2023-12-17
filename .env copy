@@ -4,14 +4,14 @@
 # Prisma supports the native connection string format for PostgreSQL, MySQL, SQLite, SQL Server, MongoDB and CockroachDB.
 # See the documentation for all the connection string options: https://pris.ly/d/connection-strings
 
-DATABASE_URL="mysql://root:130508@Momunu@localhost:3306/careerpath"
+DATABASE_URL="mysql://username:password@localhost:3306/careerpath"
 NEXT_PUBLIC_APP_NAME="CareerPath"
 NEXT_PUBLIC_URL_API_SEKOLAH="https://api-sekolah-indonesia.vercel.app"
-AUTH_SECRET="nuGEJAGOEFy2FhrWqZsBG+ssyS8JBBw6pGT4qqZqIjw="
+AUTH_SECRET=""
 
 # clerk
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_cmVsYXRlZC1idWctNDguY2xlcmsuYWNjb3VudHMuZGV2JA
-CLERK_SECRET_KEY=sk_test_dkf519uZRMZdYXovHLLfdKDgWAWEk7CLSvv1pN86zv
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
