@@ -34,13 +34,13 @@ export default function Home() {
                   <span className="ms-3"> Temukan Karir </span>
                 </button>
               </div>
-              <div className="mt-3 sm:mt-0 sm:ml-3">
+              {/* <div className="mt-3 sm:mt-0 sm:ml-3">
                 <button
                   className="w-full flex items-center justify-center px-8 py-2 border-2 md:border-4 border-gray-600 text-base font-medium rounded-md bg-white active:bg-gray-200 text-gray-800 md:py-4 md:text-lg md:px-8"
                 >
                   Mulai Bimbingan
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="lg:inset-y-0 lg:right-0 lg:w-1/2 my-4">

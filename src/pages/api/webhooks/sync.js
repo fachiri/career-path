@@ -13,7 +13,6 @@ export default async function handler(req, res) {
             firstName: data.first_name,
             lastName: data.last_name,
             email: data.email_addresses[0].email_address,
-            role: 'SISWA',
             schoolId: null
           }
         })

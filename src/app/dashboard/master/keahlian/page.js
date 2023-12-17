@@ -33,14 +33,14 @@ export default function MasterKeahlian() {
   return (
     <>
       <section className="sm:px-4 lg:px-6 xl:px-8">
+        {alert && (
+          <div className="mb-3">
+            <Alert color={alert.color} onDismiss={() => setAlert(null)}>
+              <div dangerouslySetInnerHTML={{ __html: alert.message }} />
+            </Alert>
+          </div>
+        )}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
-          {alert && (
-            <div className="mb-3 px-6">
-              <Alert color={alert.color} onDismiss={() => setAlert(null)}>
-                <div dangerouslySetInnerHTML={{ __html: alert.message }} />
-              </Alert>
-            </div>
-          )}
           <div className="w-full p-6 bg-white sm:border sm:border-gray-200 sm:rounded-lg sm:shadow dark:bg-gray-800 dark:border-gray-700">
             <div className="relative overflow-x-auto">
               {expertiseLoading ? <SkeletonTable /> :

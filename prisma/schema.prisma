@@ -11,16 +11,19 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  clerkUserId  String   @unique
-  email        String   @unique @db.VarChar(45)
-  role         String   @db.VarChar(10)
-  firstName    String?  @db.VarChar(45)
-  lastName     String?  @db.VarChar(45)
-  schoolStatus String   @default("PENDING") @db.VarChar(10)
+  id           Int       @id @default(autoincrement())
+  clerkUserId  String    @unique
+  email        String    @unique @db.VarChar(45)
+  role         String    @default("USER") @db.VarChar(10)
+  pendingRole  String?   @db.VarChar(10)
+  firstName    String?   @db.VarChar(45)
+  lastName     String?   @db.VarChar(45)
+  sk           String?
+  schoolStatus String    @default("PENDING") @db.VarChar(10)
   schoolId     Int?
   student      Student?
   teacher      Teacher?
+  histories    History[]
 }
 
 model School {
@@ -54,14 +57,16 @@ model Personality {
 }
 
 model Career {
-  id            Int          @id @default(autoincrement())
-  code          String       @unique @db.VarChar(4)
-  name          String       @db.VarChar(45)
-  personalityId Int
-  personality   Personality? @relation(fields: [personalityId], references: [id])
-  expertiseId   Int?
-  expertise     Expertise?   @relation(fields: [expertiseId], references: [id], onDelete: SetNull)
-  rules         Rule[]
+  id             Int             @id @default(autoincrement())
+  code           String          @unique @db.VarChar(4)
+  name           String          @db.VarChar(45)
+  personalityId  Int
+  personality    Personality?    @relation(fields: [personalityId], references: [id])
+  expertiseId    Int?
+  expertise      Expertise?      @relation(fields: [expertiseId], references: [id], onDelete: SetNull)
+  rules          Rule[]
+  histories      History[]       @relation("HistoryCareer")
+  historyCareers HistoryCareer[]
 }
 
 model Expertise {
@@ -83,4 +88,23 @@ model Rule {
   statement   Statement? @relation(fields: [statementId], references: [id], onDelete: Cascade)
   careerId    Int
   career      Career?    @relation(fields: [careerId], references: [id], onDelete: Cascade)
+}
+
+model History {
+  id             Int             @id @default(autoincrement())
+  userId         Int
+  date           DateTime
+  user           User            @relation(fields: [userId], references: [id])
+  careers        Career[]        @relation("HistoryCareer")
+  historyCareers HistoryCareer[]
+}
+
+model HistoryCareer {
+  historyId Int
+  careerId  Int
+
+  history History @relation(fields: [historyId], references: [id])
+  career  Career  @relation(fields: [careerId], references: [id])
+
+  @@id([historyId, careerId])
 }

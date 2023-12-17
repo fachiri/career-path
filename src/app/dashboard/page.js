@@ -1,53 +1,80 @@
 'use client'
 
-import { useUser } from "@clerk/nextjs";
-import { useEffect } from 'react';
+import { useState } from "react";
+import { Table } from 'flowbite-react';
+import useSWR from 'swr';
+import SkeletonTable from "@/components/skeleton/table";
 
 export default function Home() {
-  const { isLoaded, isSignedIn, user } = useUser();
+  const [alert, setAlert] = useState(null)
+  const fetcher = (...args) => fetch(...args).then(res => res.json());
 
-  // useEffect(() => {
-  // console.log(user)
-  // }, [])
+  const { data: personalityData, error: personalityError, isLoading: personalityLoading } = useSWR(`/api/master/personalities`, fetcher);
+  const { data: dashboardData, error: dashboardError, isLoading: dashboardLoading } = useSWR(`/api/dashboard`, fetcher);
 
   return (
     <>
       <section className="sm:px-4 lg:px-6 xl:px-8">
-        <div className="w-full p-6 bg-white sm:border sm:border-gray-200 sm:rounded-lg sm:shadow dark:bg-gray-800 dark:border-gray-700">
-          <div className="mt-2 flex items-center gap-4">
-            <a href="#" className="basis-1/3 flex h-20 flex-col items-center justify-center rounded-md border border-dashed border-gray-200 transition-colors duration-100 ease-in-out hover:border-gray-400/80">
+        <div className="w-full bg-white sm:border sm:border-gray-200 sm:rounded-lg sm:shadow dark:bg-gray-800 dark:border-gray-700 mb-6">
+          <div className="flex items-center">
+            <div className="basis-1/4 flex flex-col items-center justify-center transition-colors hover:bg-gray-100 py-5 border-r">
               <div className="flex flex-row items-center justify-center">
-                <svg className="mr-3 fill-[#fbb03b]" xmlns="http://www.w3.org/2000/svg" version="1.1" width="24" height="24" viewBox="0 0 24 24">
-                  <path d="M12,23A1,1 0 0,1 11,22V19H7A2,2 0 0,1 5,17V7A2,2 0 0,1 7,5H21A2,2 0 0,1 23,7V17A2,2 0 0,1 21,19H16.9L13.2,22.71C13,22.89 12.76,23 12.5,23H12M13,17V20.08L16.08,17H21V7H7V17H13M3,15H1V3A2,2 0 0,1 3,1H19V3H3V15M9,9H19V11H9V9M9,13H17V15H9V13Z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 fill-[#fbb03b] mr-3">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                 </svg>
-                <span className="font-bold text-black"> 4.6K </span>
+                <span className="font-bold text-black text-xl">{dashboardData?.data?.siswaCount}</span>
               </div>
-              <div className="mt-2 text-sm text-gray-400">Comments</div>
-            </a>
-            <a href="#"
-              className="basis-1/3 flex h-20 flex-col items-center justify-center rounded-md border border-dashed border-gray-200 transition-colors duration-100 ease-in-out hover:border-gray-400/80">
+              <div className="mt-2 text-lg text-gray-400">Siswa</div>
+            </div>
+            <div className="basis-1/4 flex flex-col items-center justify-center transition-colors hover:bg-gray-100 py-5 border-r">
               <div className="flex flex-row items-center justify-center">
-                <svg className="mr-3 fill-[#fbb03b]" xmlns="http://www.w3.org/2000/svg"
-                 version="1.1" width="24" height="24" viewBox="0 0 24 24">
-                  <path
-                    d="M2.5 19.6L3.8 20.2V11.2L1.4 17C1 18.1 1.5 19.2 2.5 19.6M15.2 4.8L20.2 16.8L12.9 19.8L7.9 7.9V7.8L15.2 4.8M15.3 2.8C15 2.8 14.8 2.8 14.5 2.9L7.1 6C6.4 6.3 5.9 7 5.9 7.8C5.9 8 5.9 8.3 6 8.6L11 20.5C11.3 21.3 12 21.7 12.8 21.7C13.1 21.7 13.3 21.7 13.6 21.6L21 18.5C22 18.1 22.5 16.9 22.1 15.9L17.1 4C16.8 3.2 16 2.8 15.3 2.8M10.5 9.9C9.9 9.9 9.5 9.5 9.5 8.9S9.9 7.9 10.5 7.9C11.1 7.9 11.5 8.4 11.5 8.9S11.1 9.9 10.5 9.9M5.9 19.8C5.9 20.9 6.8 21.8 7.9 21.8H9.3L5.9 13.5V19.8Z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 fill-[#fbb03b] mr-3">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                 </svg>
-                <span className="font-bold text-black"> 45 </span>
+                <span className="font-bold text-black text-xl">{dashboardData?.data?.guruCount}</span>
               </div>
-              <div className="mt-2 text-sm text-gray-400">Projects</div>
-            </a>
-            <a href="#"
-              className="basis-1/3 flex h-20 flex-col items-center justify-center rounded-md border border-dashed border-gray-200 transition-colors duration-100 ease-in-out hover:border-gray-400/80">
+              <div className="mt-2 text-lg text-gray-400">Guru</div>
+            </div>
+            <div className="basis-1/4 flex flex-col items-center justify-center transition-colors hover:bg-gray-100 py-5 border-r">
               <div className="flex flex-row items-center justify-center">
-                <svg className="mr-3 fill-[#fbb03b]" xmlns="http://www.w3.org/2000/svg"
-                 version="1.1" width="24" height="24" viewBox="0 0 24 24">
-                  <path
-                    d="M5.68,19.74C7.16,20.95 9,21.75 11,21.95V19.93C9.54,19.75 8.21,19.17 7.1,18.31M13,19.93V21.95C15,21.75 16.84,20.95 18.32,19.74L16.89,18.31C15.79,19.17 14.46,19.75 13,19.93M18.31,16.9L19.74,18.33C20.95,16.85 21.75,15 21.95,13H19.93C19.75,14.46 19.17,15.79 18.31,16.9M15,12A3,3 0 0,0 12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12M4.07,13H2.05C2.25,15 3.05,16.84 4.26,18.32L5.69,16.89C4.83,15.79 4.25,14.46 4.07,13M5.69,7.1L4.26,5.68C3.05,7.16 2.25,9 2.05,11H4.07C4.25,9.54 4.83,8.21 5.69,7.1M19.93,11H21.95C21.75,9 20.95,7.16 19.74,5.68L18.31,7.1C19.17,8.21 19.75,9.54 19.93,11M18.32,4.26C16.84,3.05 15,2.25 13,2.05V4.07C14.46,4.25 15.79,4.83 16.9,5.69M11,4.07V2.05C9,2.25 7.16,3.05 5.68,4.26L7.1,5.69C8.21,4.83 9.54,4.25 11,4.07Z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 fill-[#fbb03b] mr-3">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                 </svg>
-                <span className="font-bold text-black"> 120K </span>
+                <span className="font-bold text-black text-xl">{dashboardData?.data?.kepsekCount}</span>
               </div>
-              <div className="mt-2 text-sm text-gray-400">Downloads</div>
-            </a>
+              <div className="mt-2 text-lg text-gray-400">Kepsek</div>
+            </div>
+            <div className="basis-1/4 flex flex-col items-center justify-center transition-colors hover:bg-gray-100 py-5">
+              <div className="flex flex-row items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 fill-[#fbb03b] mr-3">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+                </svg>
+                <span className="font-bold text-black text-xl">{dashboardData?.data?.sekolahCount}</span>
+              </div>
+              <div className="mt-2 text-lg text-gray-400">Sekolah</div>
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-5">
+          <div className="w-full p-6 bg-white sm:border sm:border-gray-200 sm:rounded-lg sm:shadow dark:bg-gray-800 dark:border-gray-700">
+            <div className="relative overflow-x-auto">
+              {personalityLoading ? <SkeletonTable /> :
+                <Table striped>
+                  <Table.Head className="border-b-2">
+                    <Table.HeadCell>Kepribadian</Table.HeadCell>
+                    <Table.HeadCell>Deskripsi</Table.HeadCell>
+                  </Table.Head>
+                  <Table.Body className="divide-y">
+                    {personalityData?.data.map((personality, key) => (
+                      <Table.Row key={key} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                        <Table.Cell className="align-top">{personality.name}</Table.Cell>
+                        <Table.Cell>{personality.desc}</Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+              }
+            </div>
           </div>
         </div>
       </section>

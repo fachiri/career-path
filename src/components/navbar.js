@@ -38,7 +38,7 @@ export default function Navbar() {
                 </button>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/konseling" className="p-3 xl:p-6">
                 <button>
                   <span>Konseling</span>
@@ -51,7 +51,7 @@ export default function Navbar() {
                   <span>Blog</span>
                 </button>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/tentang" className="p-3 xl:p-6">
                 <button>

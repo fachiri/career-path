@@ -10,7 +10,8 @@ export default async function handler(req, res) {
           personality: {
             select: {
               id: true,
-              name: true
+              name: true,
+              desc: true
             }
           },
           expertise: {
@@ -56,8 +57,12 @@ export default async function handler(req, res) {
 
           if (allCodesInFacts) {
             data.careers.push({
+              id: career.id,
               code: career.code,
               name: career.name,
+              expertise: career.expertise.name,
+              personality: career.personality.name,
+              personalityDesc: career.personality.desc,
             });
           }
         }

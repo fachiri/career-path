@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 import { getUserByEmail } from '@/lib/auth'
 
 export default async function handler(req, res) {
