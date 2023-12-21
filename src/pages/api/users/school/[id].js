@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import multer from 'multer';
+import path from 'path';
 
 export const config = {
   api: {
@@ -16,7 +17,7 @@ const randomFilename = (originalname) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/uploads/sk/'); 
+    cb(null, path.join(process.cwd(), './public/uploads/sk/')); 
   },
   filename: function (req, file, cb) {
     cb(null, randomFilename(file.originalname))
