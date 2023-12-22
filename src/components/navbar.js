@@ -31,13 +31,13 @@ export default function Navbar() {
                 </button>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/karir" className="p-3 xl:p-6">
                 <button>
                   <span>Karir</span>
                 </button>
               </Link>
-            </li>
+            </li> */}
             {/* <li>
               <Link href="/konseling" className="p-3 xl:p-6">
                 <button>
@@ -52,13 +52,13 @@ export default function Navbar() {
                 </button>
               </Link>
             </li> */}
-            <li>
+            {/* <li>
               <Link href="/tentang" className="p-3 xl:p-6">
                 <button>
                   <span>Tentang</span>
                 </button>
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
         <div className="lg:border-l flex items-center px-4 lg:px-6 xl:px-8 lg:space-x-3">

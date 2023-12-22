@@ -1,6 +1,11 @@
 'use client'
 
-import LoaderFull from "@/components/loaderfull"
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+
 import { useUser } from "@clerk/nextjs"
 import { Alert, Badge, Button, FileInput, Select } from "flowbite-react"
 import { useEffect, useState } from "react"
@@ -16,6 +21,7 @@ export default function DashboardSekolah() {
   const [alert, setAlert] = useState(null)
   const [file, setFile] = useState()
   const [submitLoading, setSubmitLoading] = useState(false)
+  const defaultLayoutPluginInstance = defaultLayoutPlugin()
 
   const apiUrl = process.env.NEXT_PUBLIC_URL_API_SEKOLAH
   const { user } = useUser();
@@ -95,7 +101,7 @@ export default function DashboardSekolah() {
 
   return (
     <>
-      <section className="sm:px-4 lg:px-6 xl:px-8">
+      <section className="sm:px-4 lg:px-6 xl:px-8 mb-6">
         <div className="w-full p-6 bg-white sm:border sm:border-gray-200 sm:rounded-lg sm:shadow dark:bg-gray-800 dark:border-gray-700">
           {alert && (
             <div className="mb-3">
@@ -196,6 +202,7 @@ export default function DashboardSekolah() {
                 name="sk"
                 onChange={(e) => setFile(e.target.files?.[0])}
               />
+              <small className='text-xs px-1'>Format (.pdf)</small>
             </div>
             <div className="grid place-content-end">
               <Button
@@ -208,6 +215,20 @@ export default function DashboardSekolah() {
               </Button>
             </div>
           </form>
+        </div>
+      </section>
+      <section className="sm:px-4 lg:px-6 xl:px-8 mb-6">
+        <div className="w-full p-6 bg-white sm:border sm:border-gray-200 sm:rounded-lg sm:shadow dark:bg-gray-800 dark:border-gray-700">
+          <h5 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Surat Keterangan</h5>
+          <div>
+            {userData?.data?.user?.sk ?
+              <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                <Viewer fileUrl={`/uploads/sk/${userData?.data?.user?.sk}`} plugins={[defaultLayoutPluginInstance]} />
+              </Worker>
+              :
+              <p>File tidak ditemukan</p>
+            }
+          </div>
         </div>
       </section>
     </>

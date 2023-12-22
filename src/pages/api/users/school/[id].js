@@ -24,7 +24,22 @@ const storage = multer.diskStorage({
   }
 })
 
-const upload = multer({ storage: storage })
+const fileFilter = function (req, file, cb) {
+  // Check if the file has a .pdf extension
+  const allowedExtensions = ['.pdf'];
+  const fileExtension = path.extname(file.originalname).toLowerCase();
+
+  if (allowedExtensions.includes(fileExtension)) {
+    cb(null, true); // Accept the file
+  } else {
+    cb(new Error('Jenis file tidak valid. Hanya file dengan ekstensi .pdf yang diperbolehkan.'), false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter
+});
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
@@ -75,7 +90,7 @@ export default async function handler(req, res) {
           console.error(err);
           return res.status(500).json({
             success: false,
-            message: 'Error handling file',
+            message: err.message,
             error: err,
           });
         }
@@ -112,7 +127,7 @@ export default async function handler(req, res) {
       console.log(error)
       res.status(500).json({
         success: false,
-        message: 'Internal Server Error',
+        message: error.message,
         error
       });
     }

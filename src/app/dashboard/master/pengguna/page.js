@@ -1,5 +1,11 @@
 "use client"
 
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+
 import { Alert, Table, Button, Modal, Badge } from "flowbite-react";
 import { useState } from "react";
 import axios from "axios"
@@ -13,6 +19,7 @@ export default function MasterPengguna() {
   const [openModal, setOpenModal] = useState(undefined);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isLoading, setIsLoading] = useState([])
+  const defaultLayoutPluginInstance = defaultLayoutPlugin()
 
   const { data: userData, error: userError, isLoading: userLoading } = useSWR(`/api/master/users`, fetcher);
 
@@ -80,13 +87,23 @@ export default function MasterPengguna() {
                                   <dt className="mb-1 text-gray-500 dark:text-gray-400">Email</dt>
                                   <dd className="font-semibold">{user.email}</dd>
                                 </div>
-                                <div className="flex flex-col pt-3">
+                                <div className="flex flex-col py-3">
                                   <dt className="mb-1 text-gray-500 dark:text-gray-400">NPSN</dt>
                                   <dd className="font-semibold">{user.npsn}</dd>
                                 </div>
-                                <div className="flex flex-col pt-3">
+                                <div className="flex flex-col py-3">
                                   <dt className="mb-1 text-gray-500 dark:text-gray-400">Sekolah</dt>
                                   <dd className="font-semibold">{user.schoolName}</dd>
+                                </div>
+                                <div className="flex flex-col py-3">
+                                  <dt className="mb-1 text-gray-500 dark:text-gray-400">Surat Keterangan</dt>
+                                  <dd className="font-semibold">
+                                    <div className='w-full'>
+                                      <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                                        <Viewer fileUrl={`/uploads/sk/${user.sk}`} plugins={[defaultLayoutPluginInstance]} />
+                                      </Worker>
+                                    </div>
+                                  </dd>
                                 </div>
                               </dl>
 
